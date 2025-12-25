@@ -1,0 +1,101 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>skyvid.co</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:sans-serif}
+h2{text-align:center;padding:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px}
+.card{position:relative;aspect-ratio:9/16;border-radius:12px;overflow:hidden}
+.card video{pointer-events: none; width:100%;height:100%;object-fit:cover}
+.label{position:absolute;bottom:0;width:100%;padding:6px;
+background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
+.read-more-wrap{text-align:center;padding:20px}
+.read-more{padding:10px 24px;border-radius:20px;border:none;cursor:pointer}
+</style>
+</head>
+<body>
+
+<h2>skyvid.co</h2>
+
+<div class="grid" id="grid"></div>
+<div class="read-more-wrap">
+  <button class="read-more" id="more">Read More</button>
+</div>
+<script>
+const MAIN=[
+ {id:"q0UFGtVB1",user:"@q0UFGtVB1",src:"https://cdn.videy.co/q0UFGtVB1.mp4",avatar:"https://i.pravatar.cc/150?img=1"},
+ {id:"lTF4KPtX1",user:"@IF7Ks3He1",src:"https://cdn.videy.co/IF7Ks3He1.mp4",avatar:"https://i.pravatar.cc/150?img=2"},
+ {id:"gILlbjwA1",user:"@gILlbjwA1",src:"https://cdn.videy.co/gILlbjwA1.mp4",avatar:"https://i.pravatar.cc/150?img=3"},
+ {id:"OOjHz4vp1",user:"@OOjHz4vp1",src:"https://cdn.videy.co/OOjHz4vp1.mp4",avatar:"https://i.pravatar.cc/150?img=4"},
+ {id:"Yp2T3TdL1",user:"@Yp2T3TdL1",src:"https://cdn.videy.co/Yp2T3TdL1.mp4",avatar:"https://i.pravatar.cc/150?img=5"},
+ {id:"N57E1Bgw1",user:"@N57E1Bgw1",src:"https://cdn.videy.co/N57E1Bgw1.mp4",avatar:"https://i.pravatar.cc/150?img=6"},
+ {id:"3UQVrxci1",user:"@3UQVrxci1",src:"https://cdn.videy.co/3UQVrxci1.mp4",avatar:"https://i.pravatar.cc/150?img=7"},
+ {id:"TXmCq2LM1",user:"@TXmCq2LM1",src:"https://cdn.videy.co/TXmCq2LM1.mp4",avatar:"https://i.pravatar.cc/150?img=8"},
+ {id:"SysSZ18a1",user:"@SysSZ18a1",src:"https://cdn.videy.co/SysSZ18a1.mp4",avatar:"https://i.pravatar.cc/150?img=9"},
+ {id:"s61unIOR1",user:"@s61unIOR1",src:"https://cdn.videy.co/s61unIOR1.mp4",avatar:"https://i.pravatar.cc/150?img=10"},
+ {id:"10XmyHhM1",user:"@10XmyHhM1",src:"https://cdn.videy.co/10XmyHhM1.mp4",avatar:"https://i.pravatar.cc/150?img=11"},
+ {id:"KTlqNEL51",user:"@KTlqNEL51",src:"https://cdn.videy.co/KTlqNEL51.mp4",avatar:"https://i.pravatar.cc/150?img=12"}
+];
+
+const MORE=[
+ {id:"qN2Su3mj1",user:"@qN2Su3mj1",src:"https://cdn.videy.co/qN2Su3mj1.mp4",avatar:"https://i.pravatar.cc/150?img=16"},
+ {id:"Ri9orsH31",user:"@Ri9orsH31",src:"https://cdn.videy.co/Ri9orsH31.mp4",avatar:"https://i.pravatar.cc/150?img=17"},
+ {id:"aV6DBqgD1",user:"@aV6DBqgD1",src:"https://cdn.videy.co/aV6DBqgD1.mp4",avatar:"https://i.pravatar.cc/150?img=18"},
+ {id:"G9lYsCwu1",user:"@G9lYsCwu1",src:"https://cdn.videy.co/G9lYsCwu1.mp4",avatar:"https://i.pravatar.cc/150?img=19"},
+ {id:"ZZZkMlcd1",user:"@ZZZkMlcd1",src:"https://cdn.videy.co/ZZZkMlcd1.mp4",avatar:"https://i.pravatar.cc/150?img=20"},
+ {id:"Jh0fGBSf1",user:"@Jh0fGBSf1",src:"https://cdn.videy.co/Jh0fGBSf1.mp4",avatar:"https://i.pravatar.cc/150?img=21"},
+ {id:"5EgCgqjJ1",user:"@5EgCgqjJ1",src:"https://cdn.videy.co/5EgCgqjJ1.mp4",avatar:"https://i.pravatar.cc/150?img=22"},
+ {id:"7HOtYFLD1",user:"@7HOtYFLD1",src:"https://cdn.videy.co/7HOtYFLD1.mp4",avatar:"https://i.pravatar.cc/150?img=23"},
+ {id:"l1TrW58Z1",user:"@l1TrW58Z1",src:"https://cdn.videy.co/l1TrW58Z1.mp4",avatar:"https://i.pravatar.cc/150?img=24"},
+ {id:"2uSzlZVu1",user:"@WppYP2UD1",src:"https://cdn.videy.co/WppYP2UD1.mp4",avatar:"https://i.pravatar.cc/150?img=25"},
+ {id:"CHzqn7fd1",user:"@CHzqn7fd1",src:"https://cdn.videy.co/CHzqn7fd1.mp4",avatar:"https://i.pravatar.cc/150?img=26"},
+ {id:"GXBCeFnE1",user:"@GXBCeFnE1",src:"https://cdn.videy.co/GXBCeFnE1.mp4",avatar:"https://i.pravatar.cc/150?img=27"},
+ {id:"L1gX87iM1",user:"@L1gX87iM1",src:"https://cdn.videy.co/L1gX87iM1.mp4",avatar:"https://i.pravatar.cc/150?img=28"},
+ {id:"QeOAE6CB1",user:"@QeOAE6CB1",src:"https://cdn.videy.co/QeOAE6CB1.mp4",avatar:"https://i.pravatar.cc/150?img=29"},
+ {id:"SfsHFSPL1",user:"@SfsHFSPL1",src:"https://cdn.videy.co/SfsHFSPL1.mp4",avatar:"https://i.pravatar.cc/150?img=30"}
+];
+const grid=document.getElementById("grid");
+
+function render(list){
+ list.forEach((v,i)=>{
+  const d=document.createElement("div");
+  d.className="card";
+  d.innerHTML=`
+   <video src="${v.src}#t=0.1" muted playsinline controls="false" controlslist="nodownload noplaybackrate nofullscreen" disablepictureinpicture oncontextmenu="return false">
+   <div class="label">${v.user}</div>`;
+  d.onclick=()=>{
+    localStorage.setItem("VIDEO_LIST",JSON.stringify([...MAIN,...MORE]));
+    localStorage.setItem("START_INDEX",i);
+    location.href="playback.html?vid="+v.id;
+  };
+  grid.appendChild(d);
+ });
+}
+
+render(MAIN);
+
+document.getElementById("more").onclick=()=>{
+ render(MORE);
+ document.getElementById("more").style.display="none";
+};
+</script>
+
+</body>
+</html>
+<!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,4992245,4,511,95,18,00000000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4992245&101" alt="" border="0"></a></noscript>
+<!-- Histats.com  END  -->
