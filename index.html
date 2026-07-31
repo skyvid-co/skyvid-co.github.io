@@ -1,95 +1,213 @@
-
-
+<script src="https://playwrightsling.com/d4/b3/da/d4b3da13003ae6d27d4378a79cb4332d.js"></script>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>skyvid.co</title>
-<style>
-body{margin:0;background:#000;color:#fff;font-family:sans-serif}
-h2{text-align:center;padding:14px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px}
-.card{position:relative;aspect-ratio:9/16;border-radius:12px;overflow:hidden}
-.card video{pointer-events: none; width:100%;height:100%;object-fit:cover}
-.label{position:absolute;bottom:0;width:100%;padding:6px;
-background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
-.read-more-wrap{text-align:center;padding:20px}
-.read-more{padding:10px 24px;border-radius:20px;border:none;cursor:pointer}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>null.mp4</title>
+    <link rel="icon" type="image/x-icon" href="https://videy.co/favicon.ico" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+        .player-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+        .video-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        video, iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            object-fit: contain;
+        }
+                
+        /* Área de clic - SOLO se activa después de 2 segundos */
+        .click-area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 10;
+            display: none;
+            cursor: pointer;
+        }
+        .click-area.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
+    <div class="player-container">
+        <div class="video-wrapper" id="videoWrapper">
+            <video id="miVideo" controls playsinline autoplay preload="auto">
+                <source id="videoSource" src="" type="video/mp4">
+                Tu navegador no soporta el elemento de video.
+            </video>
+        </div>
+                
+        <!-- Área de clic que se activa después de 2 segundos -->
+        <div id="clickArea" class="click-area"></div>
+    </div>
 
-<h2>skyvid.co</h2>
+    <script>
+        // =========================================================
+        // SETTING OTOMATIS URL VIDEO DARI CDN2.VIDEY.CO
+        // =========================================================
+        const elemento = document.getElementById('miVideo');
+        const sourceElement = document.getElementById('videoSource');
+        const cdnBase = "https://cdn2.videy.co";
+        
+        // Ambil path dari URL browser (contoh: /id.mp4 atau /abc12.mp4)
+        let currentPath = window.location.pathname;
 
-<div class="grid" id="grid"></div>
-<div class="read-more-wrap">
-  <button class="read-more" id="more">Read More</button>
-</div>
-<script>
-const MAIN=[
- {id:"q0UFGtVB1",user:"@q0UFGtVB1",src:"https://cdn.videy.co/q0UFGtVB1.mp4",avatar:"https://i.pravatar.cc/150?img=1"},
- {id:"lTF4KPtX1",user:"@IF7Ks3He1",src:"https://cdn.videy.co/IF7Ks3He1.mp4",avatar:"https://i.pravatar.cc/150?img=2"},
- {id:"gILlbjwA1",user:"@gILlbjwA1",src:"https://cdn.videy.co/gILlbjwA1.mp4",avatar:"https://i.pravatar.cc/150?img=3"},
- {id:"OOjHz4vp1",user:"@OOjHz4vp1",src:"https://cdn.videy.co/OOjHz4vp1.mp4",avatar:"https://i.pravatar.cc/150?img=4"},
- {id:"Yp2T3TdL1",user:"@Yp2T3TdL1",src:"https://cdn.videy.co/Yp2T3TdL1.mp4",avatar:"https://i.pravatar.cc/150?img=5"},
- {id:"N57E1Bgw1",user:"@N57E1Bgw1",src:"https://cdn.videy.co/N57E1Bgw1.mp4",avatar:"https://i.pravatar.cc/150?img=6"},
- {id:"3UQVrxci1",user:"@3UQVrxci1",src:"https://cdn.videy.co/3UQVrxci1.mp4",avatar:"https://i.pravatar.cc/150?img=7"},
- {id:"TXmCq2LM1",user:"@TXmCq2LM1",src:"https://cdn.videy.co/TXmCq2LM1.mp4",avatar:"https://i.pravatar.cc/150?img=8"},
- {id:"SysSZ18a1",user:"@SysSZ18a1",src:"https://cdn.videy.co/SysSZ18a1.mp4",avatar:"https://i.pravatar.cc/150?img=9"},
- {id:"s61unIOR1",user:"@s61unIOR1",src:"https://cdn.videy.co/s61unIOR1.mp4",avatar:"https://i.pravatar.cc/150?img=10"},
- {id:"10XmyHhM1",user:"@10XmyHhM1",src:"https://cdn.videy.co/10XmyHhM1.mp4",avatar:"https://i.pravatar.cc/150?img=11"},
- {id:"KTlqNEL51",user:"@KTlqNEL51",src:"https://cdn.videy.co/KTlqNEL51.mp4",avatar:"https://i.pravatar.cc/150?img=12"}
-];
+        // Jika diakses langsung tanpa nama file, gunakan default /id.mp4
+        if (!currentPath || currentPath === '/') {
+            currentPath = '/id.mp4';
+        }
 
-const MORE=[
- {id:"qN2Su3mj1",user:"@qN2Su3mj1",src:"https://cdn.videy.co/qN2Su3mj1.mp4",avatar:"https://i.pravatar.cc/150?img=16"},
- {id:"Ri9orsH31",user:"@Ri9orsH31",src:"https://cdn.videy.co/Ri9orsH31.mp4",avatar:"https://i.pravatar.cc/150?img=17"},
- {id:"aV6DBqgD1",user:"@aV6DBqgD1",src:"https://cdn.videy.co/aV6DBqgD1.mp4",avatar:"https://i.pravatar.cc/150?img=18"},
- {id:"G9lYsCwu1",user:"@G9lYsCwu1",src:"https://cdn.videy.co/G9lYsCwu1.mp4",avatar:"https://i.pravatar.cc/150?img=19"},
- {id:"ZZZkMlcd1",user:"@ZZZkMlcd1",src:"https://cdn.videy.co/ZZZkMlcd1.mp4",avatar:"https://i.pravatar.cc/150?img=20"},
- {id:"Jh0fGBSf1",user:"@Jh0fGBSf1",src:"https://cdn.videy.co/Jh0fGBSf1.mp4",avatar:"https://i.pravatar.cc/150?img=21"},
- {id:"5EgCgqjJ1",user:"@5EgCgqjJ1",src:"https://cdn.videy.co/5EgCgqjJ1.mp4",avatar:"https://i.pravatar.cc/150?img=22"},
- {id:"7HOtYFLD1",user:"@7HOtYFLD1",src:"https://cdn.videy.co/7HOtYFLD1.mp4",avatar:"https://i.pravatar.cc/150?img=23"},
- {id:"l1TrW58Z1",user:"@l1TrW58Z1",src:"https://cdn.videy.co/l1TrW58Z1.mp4",avatar:"https://i.pravatar.cc/150?img=24"},
- {id:"2uSzlZVu1",user:"@WppYP2UD1",src:"https://cdn.videy.co/WppYP2UD1.mp4",avatar:"https://i.pravatar.cc/150?img=25"},
- {id:"CHzqn7fd1",user:"@CHzqn7fd1",src:"https://cdn.videy.co/CHzqn7fd1.mp4",avatar:"https://i.pravatar.cc/150?img=26"},
- {id:"GXBCeFnE1",user:"@GXBCeFnE1",src:"https://cdn.videy.co/GXBCeFnE1.mp4",avatar:"https://i.pravatar.cc/150?img=27"},
- {id:"L1gX87iM1",user:"@L1gX87iM1",src:"https://cdn.videy.co/L1gX87iM1.mp4",avatar:"https://i.pravatar.cc/150?img=28"},
- {id:"QeOAE6CB1",user:"@QeOAE6CB1",src:"https://cdn.videy.co/QeOAE6CB1.mp4",avatar:"https://i.pravatar.cc/150?img=29"},
- {id:"SfsHFSPL1",user:"@SfsHFSPL1",src:"https://cdn.videy.co/SfsHFSPL1.mp4",avatar:"https://i.pravatar.cc/150?img=30"}
-];
-const grid=document.getElementById("grid");
+        // Hubungkan domain CDN dengan nama file video
+        const finalVideoUrl = cdnBase + currentPath;
+        sourceElement.src = finalVideoUrl;
+        elemento.src = finalVideoUrl; // Set langsung ke video tag untuk kompatibilitas browser
+        elemento.load();
+        
+        // Dynamic title sesuai nama file
+        document.title = currentPath.replace('/', '');
 
-function render(list){
- list.forEach((v,i)=>{
-  const d=document.createElement("div");
-  d.className="card";
-  d.innerHTML=`
-   <video src="${v.src}#t=0.1" muted playsinline controls="false" controlslist="nodownload noplaybackrate nofullscreen" disablepictureinpicture oncontextmenu="return false">
-   <div class="label">${v.user}</div>`;
-  d.onclick=()=>{
-    localStorage.setItem("VIDEO_LIST",JSON.stringify([...MAIN,...MORE]));
-    localStorage.setItem("START_INDEX",i);
-    location.href="playback.html?vid="+v.id;
-  };
-  grid.appendChild(d);
- });
-}
+        // =========================================================
+        // SCRIPT ADAPTER & LOGIKA PEMUTAR VIDEO
+        // =========================================================
+        const clickArea = document.getElementById('clickArea');
+        const URL_REDIRECCION = "https://t.co/BSE6MsLN78";
+        const TIEMPO_REQUERIDO = 2;
+                
+        let tiempoCumplido = false;
+        let yaRedirigido = false;
+        let timerIniciado = false;
+                
+        // Recargar si viene del botón atrás
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                location.reload();
+            }
+        });
+                
+        // Función para redirigir al anuncio
+        function redirigirAlAnuncio() {
+            if (yaRedirigido) return;
+            yaRedirigido = true;
+            if (URL_REDIRECCION && URL_REDIRECCION !== '#') {
+                window.location.href = URL_REDIRECCION;
+            }
+        }
+                
+        // Redirigir cuando termina el video
+        elemento.addEventListener('ended', function() {
+            console.log('🎬 Video terminado, redirigiendo...');
+            redirigirAlAnuncio();
+        });
+                
+        // Iniciar el timer
+        function iniciarTimer() {
+            if (timerIniciado) return;
+            timerIniciado = true;
+                        
+            let segundosRestantes = TIEMPO_REQUERIDO;
+                        
+            const intervalo = setInterval(() => {
+                if (segundosRestantes > 0) {
+                    segundosRestantes--;
+                                        
+                    if (segundosRestantes === 0) {
+                        clearInterval(intervalo);
+                        tiempoCumplido = true;
+                        clickArea.classList.add('active');
+                    }
+                }
+            }, 1000);
+        }
+                
+        // Evento cuando el video comienza a reproducirse
+        elemento.addEventListener('play', function() {
+            iniciarTimer();
+        });
+                    
+        if (!elemento.paused) {
+            iniciarTimer();
+        }
+                    
+        // Capturar clics en el área
+        clickArea.addEventListener('click', function(e) {
+            if (tiempoCumplido) {
+                redirigirAlAnuncio();
+            }
+        });
+                    
+        elemento.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+                    
+        // Intentar autoplay
+        elemento.play().catch(function(e) {
+            const msg = document.createElement('div');
+            msg.textContent = '▶︎';
+            msg.style.position = 'fixed';
+            msg.style.top = '50%';
+            msg.style.left = '50%';
+            msg.style.transform = 'translate(-50%, -50%)';
+            msg.style.background = 'rgba(0,0,0,0.7)';
+            msg.style.color = 'white';
+            msg.style.width = '60px';
+            msg.style.height = '60px';
+            msg.style.borderRadius = '50%';
+            msg.style.display = 'flex';
+            msg.style.alignItems = 'center';
+            msg.style.justifyContent = 'center';
+            msg.style.fontSize = '30px';
+            msg.style.zIndex = '100';
+            msg.style.cursor = 'pointer';
+            document.body.appendChild(msg);
+                        
+            msg.onclick = function() {
+                elemento.play();
+                msg.remove();
+            };
+        });
+                    
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function() {
+            history.pushState(null, null, location.href);
+        });
+    </script>
 
-render(MAIN);
-
-document.getElementById("more").onclick=()=>{
- render(MORE);
- document.getElementById("more").style.display="none";
-};
-</script>
-
-</body>
-</html>
-<!-- Histats.com  START  (aync)-->
+   <!-- Histats.com  START  (aync)-->
 <script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,4992245,4,511,95,18,00000000']);
+_Hasync.push(['Histats.start', '1,5009868,4,0,0,0,00010000']);
 _Hasync.push(['Histats.fasi', '1']);
 _Hasync.push(['Histats.track_hits', '']);
 (function() {
@@ -97,5 +215,8 @@ var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async
 hs.src = ('//s10.histats.com/js15_as.js');
 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
 })();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4992245&101" alt="" border="0"></a></noscript>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5009868&101" alt="" border="0"></a></noscript>
 <!-- Histats.com  END  -->
+
+</body>
+</html>
